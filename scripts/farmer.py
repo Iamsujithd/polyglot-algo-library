@@ -51,7 +51,7 @@ Return ONLY valid JSON in this exact format:
         "Content-Type": "application/json"
     }
     data = {
-        "model": "llama3-8b-8192",
+        "model": "llama-3.1-8b-instant",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.8,
         "response_format": {"type": "json_object"}
@@ -64,6 +64,9 @@ Return ONLY valid JSON in this exact format:
             res_json = json.loads(response.read().decode())
             content = res_json['choices'][0]['message']['content']
             return json.loads(content)
+    except urllib.error.HTTPError as e:
+        print(f"API Error: HTTP Error {e.code}: {e.read().decode()}")
+        return None
     except Exception as e:
         print(f"API Error: {e}")
         return None
