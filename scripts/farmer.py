@@ -92,9 +92,8 @@ def main():
 
     # 3. Random sleep up to 45 minutes to avoid committing exactly on the hour
     if not is_manual:
-        sleep_time = random.randint(1, 2700)
-        print(f"Sleeping for {sleep_time} seconds before committing...")
-        time.sleep(sleep_time)
+        # Temporarily removing sleep for debugging
+        pass
 
     # 4. Decide how many commits to make right now (1 to 3)
     commits_to_make = random.randint(1, 3)
