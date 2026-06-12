@@ -92,8 +92,9 @@ def main():
 
     # 3. Random sleep up to 45 minutes to avoid committing exactly on the hour
     if not is_manual:
-        # Temporarily removing sleep for debugging
-        pass
+        sleep_time = random.randint(1, 2700)
+        print(f"Sleeping for {sleep_time} seconds before committing...")
+        time.sleep(sleep_time)
 
     # 4. Decide how many commits to make right now (1 to 3)
     commits_to_make = random.randint(1, 3)
@@ -133,9 +134,11 @@ def main():
         # Sleep briefly between commits in the same batch
         time.sleep(random.randint(10, 60))
 
-    # Push all changes
-    execute_cmd("git push origin main")
-    print(f"Pushed to GitHub. Total commits today: {tracker['count']}")
+    # Push all commits made in this run
+    if commits_made > 0:
+        execute_cmd("git pull --rebase origin main")
+        execute_cmd("git push origin main")
+        print(f"Pushed to GitHub. Total commits today: {tracker['count']}")
 
 if __name__ == "__main__":
     main()
