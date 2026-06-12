@@ -48,7 +48,8 @@ Return ONLY valid JSON in this exact format:
 """
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
     data = {
         "model": "llama-3.1-8b-instant",
@@ -76,8 +77,10 @@ def main():
         print("Missing GROQ_API_KEY")
         sys.exit(1)
 
+    is_manual = os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch"
+
     # 1. 60% chance to do completely nothing (simulating being offline)
-    if random.random() < 0.60:
+    if not is_manual and random.random() < 0.60:
         print("Skipping this hour to simulate natural gaps.")
         sys.exit(0)
 
@@ -88,9 +91,10 @@ def main():
         sys.exit(0)
 
     # 3. Random sleep up to 45 minutes to avoid committing exactly on the hour
-    sleep_time = random.randint(1, 2700)
-    print(f"Sleeping for {sleep_time} seconds before committing...")
-    time.sleep(sleep_time)
+    if not is_manual:
+        sleep_time = random.randint(1, 2700)
+        print(f"Sleeping for {sleep_time} seconds before committing...")
+        time.sleep(sleep_time)
 
     # 4. Decide how many commits to make right now (1 to 3)
     commits_to_make = random.randint(1, 3)
