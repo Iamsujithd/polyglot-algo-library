@@ -98,6 +98,7 @@ def main():
 
     # 4. Decide how many commits to make right now (1 to 3)
     commits_to_make = random.randint(1, 3)
+    commits_made = 0
     
     for _ in range(commits_to_make):
         if tracker["count"] >= MAX_DAILY_COMMITS:
@@ -128,6 +129,7 @@ def main():
         
         tracker["count"] += 1
         write_tracker(tracker["count"])
+        commits_made += 1
         
         print(f"Committed: {commit_message}")
         
