@@ -1,5 +1,7 @@
-import functools
-
 def fib(n):
-    if n < 2: return n
-    return functools.reduce(lambda x, _: x + fib(x + 1), range(n - 2), 0)
+  if n <= 0:
+    return 0
+  a, b = 0, 1
+  for _ in range(2, n+1):
+    a, b = b, a + b
+  return b
